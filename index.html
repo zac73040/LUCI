@@ -1,96 +1,208 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Para alguien especial 💖</title>
-<style>
-    body {
-        background: black;
-        color: white;
-        text-align: center;
-        font-family: Arial;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Linda Lu 💖</title>
+    <style>
+        :root {
+            --rosa-brillante: #ff0054;
+            --rosa-profundo: #59022;
+            --verde-tallo: #1b4332;
+            --girasol-petalo: #ffc300;
+            --girasol-centro: #3d2b1f;
+            --color-carta: #fdf5e6;
+        }
 
-    #contenido {
-        display: none;
-    }
+        body {
+            background: #050505;
+            color: white;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-    .rosa {
-        font-size: 50px;
-        animation: crecer 2s infinite alternate;
-    }
+        /* --- Login --- */
+        #login {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px 50px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 195, 0, 0.3);
+            animation: fadeIn 1.5s ease;
+            z-index: 100;
+        }
 
-    @keyframes crecer {
-        from { transform: scale(1); }
-        to { transform: scale(1.3); }
-    }
+        .girasol-container { width: 120px; height: 120px; margin: 0 auto 15px auto; }
+        .girasol-svg { width: 100%; height: 100%; animation: girar 12s linear infinite; }
+        @keyframes girar { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-    button {
-        padding: 10px 20px;
-        font-size: 16px;
-        margin-top: 15px;
-        cursor: pointer;
-    }
-</style>
+        input { padding: 12px; border-radius: 8px; border: 1px solid var(--girasol-petalo); margin-bottom: 20px; width: 220px; text-align: center; background: rgba(0,0,0,0.6); color: white; }
+
+        /* --- Contenido Principal --- */
+        #contenido { display: none; width: 100%; max-width: 600px; padding: 20px; animation: fadeIn 2s ease; }
+        .rosa-frame { position: relative; width: 320px; height: 430px; margin: 0 auto 10px auto; }
+        .rosa-svg { width: 100%; height: 100%; filter: drop-shadow(0 0 20px rgba(255, 0, 84, 0.5)); }
+
+        #grupo-petalos { transform-origin: 50% 55%; }
+        .animar-latido { animation: latido 1.5s ease-in-out infinite; }
+        @keyframes latido { 
+            0%, 100% { transform: scale(1); } 
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 30px var(--rosa-brillante)); } 
+        }
+
+        .petalo-rosa { fill: url(#gradRosa); opacity: 0; transform-origin: center; }
+        .tallo-largo { fill: none; stroke: var(--verde-tallo); stroke-width: 4; stroke-dasharray: 250; stroke-dashoffset: 250; }
+        .animar-petalo { animation: aparecer 2s ease-out forwards; }
+        .animar-tallo { animation: dibujarTallo 2.5s ease-out forwards; }
+
+        @keyframes aparecer { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes dibujarTallo { to { stroke-dashoffset: 0; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        #texto { font-size: 1.15rem; line-height: 1.6; color: #ffe5ec; margin-top: 10px; padding: 0 20px; white-space: pre-line; }
+
+        /* --- Botones --- */
+        .btn-entrar { background: linear-gradient(45deg, #ff9500, #ffc300); color: #000; border: none; padding: 12px 35px; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        .btn-accion { background: var(--rosa-brillante); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; margin: 10px; transition: 0.3s; }
+        
+        /* Botón de video resaltado */
+        .btn-video { background: linear-gradient(45deg, #ff0054, #ff758f); box-shadow: 0 0 15px rgba(255, 0, 84, 0.5); }
+
+        /* --- Modales --- */
+        .modal {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            width: 85%; max-width: 400px; background: var(--color-carta); color: #3d2b1f; padding: 35px;
+            border-radius: 15px; box-shadow: 0 0 50px rgba(0,0,0,0.9); z-index: 200; transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .abierto { transform: translate(-50%, -50%) scale(1) !important; display: block !important; }
+        #video-modal { background: #000; padding: 10px; max-width: 500px; }
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 150; }
+    </style>
 </head>
-
 <body>
 
-<h2>🔒 Acceso privado</h2>
-<input type="password" id="pass" placeholder="Ingresa la clave 💌">
-<br>
-<button onclick="verificar()">Entrar</button>
+    <audio id="musica" loop src="musica.mp3"></audio>
+    <div id="overlay"></div>
 
-<div id="contenido">
-    <h1>💖 Querida Luciana 💖</h1>
+    <div id="login">
+        <div class="girasol-container">
+            <svg viewBox="0 0 100 100" class="girasol-svg">
+                <g fill="var(--girasol-petalo)">
+                    <ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(0 50 50)" /><ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(30 50 50)" /><ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(60 50 50)" /><ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(90 50 50)" /><ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(120 50 50)" /><ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(150 50 50)" /><ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(180 50 50)" /><ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(210 50 50)" /><ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(240 50 50)" /><ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(270 50 50)" /><ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(300 50 50)" /><ellipse cx="50" cy="20" rx="6" ry="15" transform="rotate(330 50 50)" />
+                </g>
+                <circle cx="50" cy="50" r="18" fill="#5c4033" /><circle cx="50" cy="50" r="14" fill="var(--girasol-centro)" />
+            </svg>
+        </div>
+        <h2 style="margin-top: 0; color: var(--girasol-petalo);">Acceso Privado</h2>
+        <input type="password" id="pass" placeholder="Ingresa la clave">
+        <br>
+        <button class="btn-entrar" onclick="verificar()">Entrar 💌</button>
+    </div>
 
-    <div class="rosa">🌹</div>
+    <div id="contenido">
+        <h1 style="color: var(--rosa-brillante); margin-bottom: 0;">💖 Linda Lu 💖</h1>
+        <div class="rosa-frame">
+            <svg viewBox="0 0 100 150" class="rosa-svg">
+                <defs>
+                    <radialGradient id="gradRosa" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" style="stop-color:#ff4d6d" /><stop offset="100%" style="stop-color:#800e13" />
+                    </radialGradient>
+                </defs>
+                <path id="tallo" class="tallo-largo" d="M50,145 Q55,100 50,55" />
+                <path class="animar-petalo" d="M50,115 Q75,105 65,125 Q50,130 50,115" fill="#2d6a4f" style="animation-delay: 1.2s;" />
+                <path class="animar-petalo" d="M50,95 Q25,85 35,105 Q50,115 50,95" fill="#2d6a4f" style="animation-delay: 1.5s;" />
+                <g id="grupo-petalos">
+                    <ellipse class="petalo-rosa animar-petalo" cx="50" cy="36" rx="14" ry="20" style="animation-delay: 2s;" />
+                    <ellipse class="petalo-rosa animar-petalo" cx="50" cy="74" rx="14" ry="20" style="animation-delay: 2.2s;" />
+                    <ellipse class="petalo-rosa animar-petalo" cx="30" cy="55" rx="20" ry="14" style="animation-delay: 2.4s;" />
+                    <ellipse class="petalo-rosa animar-petalo" cx="70" cy="55" rx="20" ry="14" style="animation-delay: 2.6s;" />
+                    <g transform="rotate(45 50 55)">
+                        <ellipse class="petalo-rosa animar-petalo" cx="50" cy="35" rx="12" ry="18" style="animation-delay: 2.8s;" />
+                        <ellipse class="petalo-rosa animar-petalo" cx="50" cy="75" rx="12" ry="18" style="animation-delay: 3s;" />
+                    </g>
+                    <g transform="rotate(-45 50 55)">
+                        <ellipse class="petalo-rosa animar-petalo" cx="50" cy="35" rx="12" ry="18" style="animation-delay: 3.2s;" />
+                        <ellipse class="petalo-rosa animar-petalo" cx="50" cy="75" rx="12" ry="18" style="animation-delay: 3.4s;" />
+                    </g>
+                    <circle class="petalo-rosa animar-petalo" cx="50" cy="55" r="10" style="animation-delay: 3.8s; fill: #4a0404;" />
+                </g>
+            </svg>
+        </div>
+        <p id="texto"></p>
+        
+        <!-- Orden cambiado: Video primero -->
+        <div id="botones-finales" style="display:none;">
+            <button class="btn-accion btn-video" onclick="abrirVideo()">Ver video 🎬</button>
+            <button class="btn-accion" onclick="abrirModal('carta')">Leer mi carta ✉️</button>
+        </div>
+    </div>
 
-    <p id="texto"></p>
+    <!-- Carta (Pág 1 y Pág 2) -->
+    <div id="carta" class="modal">
+        <h3 style="text-align: center; color: #800e13; font-family: 'Georgia', serif;">Para: Linda Lu</h3>
+        <div id="pag1" style="font-family: 'Georgia', serif; line-height: 1.6; text-align: justify;">
+            <p>Desde que te conocí, hay algo en ti que no puedo dejar de admirar. Me gusta mucho cómo eres, me gusta tu forma de ver las cosas y, sobre todo, me gusta cómo me haces sentir cuando hablamos.</p>
+            <p><b>Me encanta mirar tus ojos, esos ojos que son dos estrellas muy hermosas.</b> Sé que sientes algo por mí y es por esa esperanza que tengo que no quiero dejar de conquistarte.</p>
+            <button class="btn-accion" style="width: 100%; margin-top: 10px;" onclick="siguientePagina()">Siguiente página ✨</button>
+        </div>
+        <div id="pag2" style="display: none; font-family: 'Georgia', serif; line-height: 1.6; text-align: justify;">
+            <p>Quiero llegar a tu corazón y demostrar que todo se puede realizar, porque si no sintieras nada por mí no me habrías abrazado ese día, no nos hubiéramos echado juntos, no me habrías dicho "Te Quiero".</p>
+            <p>No quiero separarme de ti, sí te estoy dando tu espacio, pero no quiero dejar de hablarte y demostrarte que no soy como todos, pero si tú quieres que me aleje por favor dime y cumpliré el deseo de la linda princesa Luciana (pequeña niña).</p>
+            <p style="text-align: right; font-weight: bold;">Con todo mi cariño, <br> Yo ✨</p>
+            <button class="btn-accion" onclick="cerrarModal('carta')">Cerrar Carta</button>
+        </div>
+    </div>
 
-    <button onclick="verVideo()">Ver sorpresa 🎬</button>
-
-    <audio id="musica" src="musica.mp3"></audio>
-</div>
+    <div id="video-modal" class="modal">
+        <video id="player" width="100%" controls> <source src="video.mp4" type="video/mp4"> </video>
+        <br>
+        <button class="btn-accion" style="background: #800e13;" onclick="cerrarVideo()">← Atrás / Volver</button>
+    </div>
 
 <script>
-function verificar() {
-    let clave = document.getElementById("pass").value;
-
-    if (clave === "lu123") { // 🔑 cambia la clave aquí
-        document.getElementById("contenido").style.display = "block";
-        document.body.querySelector("h2").style.display = "none";
-        document.getElementById("pass").style.display = "none";
-
-        escribirTexto();
-        document.getElementById("musica").play();
-    } else {
-        alert("Clave incorrecta 😢");
+    function verificar() {
+        let clave = document.getElementById("pass").value;
+        if (clave === "lu123") {
+            document.getElementById("login").style.display = "none";
+            document.getElementById("contenido").style.display = "block";
+            document.getElementById("tallo").classList.add("animar-tallo");
+            setTimeout(() => { document.getElementById("grupo-petalos").classList.add("animar-latido"); }, 4000);
+            document.getElementById("musica").play();
+            setTimeout(escribirTexto, 1500);
+        } else { alert("Clave incorrecta 😢"); }
     }
-}
 
-function escribirTexto() {
-    let texto = "No soy perfecto, pero contigo todo se siente perfecto... 💕\nMe encanta tu sonrisa y la forma en que haces mis días mejores.\n\nEspero te guste esta música que pondré para ti...\nTe la dedico desde mi corazón 💖\nQuerida y linda Lu 💕";
-    
-    let i = 0;
-    let velocidad = 50;
-    let elemento = document.getElementById("texto");
-
-    function escribir() {
-        if (i < texto.length) {
-            elemento.innerHTML += texto.charAt(i);
-            i++;
-            setTimeout(escribir, velocidad);
+    function escribirTexto() {
+        let texto = "No soy perfecto, pero contigo todo se siente diferente... 💕\nTe dedico este detalle con mucho cariño ✨\nPara: Linda Lu 💕";
+        let i = 0; let elemento = document.getElementById("texto");
+        function escribir() {
+            if (i < texto.length) { elemento.innerHTML += texto.charAt(i); i++; setTimeout(escribir, 55); }
+            else { document.getElementById("botones-finales").style.display = "block"; }
         }
+        escribir();
     }
 
-    escribir();
-}
+    function abrirModal(id) { document.getElementById(id).classList.add('abierto'); document.getElementById('overlay').style.display = 'block'; }
+    function cerrarModal(id) { 
+        document.getElementById(id).classList.remove('abierto'); 
+        document.getElementById('overlay').style.display = 'none';
+        setTimeout(() => { document.getElementById('pag1').style.display = 'block'; document.getElementById('pag2').style.display = 'none'; }, 600);
+    }
+    function siguientePagina() { document.getElementById('pag1').style.display = 'none'; document.getElementById('pag2').style.display = 'block'; }
 
-function verVideo() {
-    window.open("video.mp4", "_blank"); // tu video aquí
-}
+    function abrirVideo() { document.getElementById("musica").pause(); abrirModal('video-modal'); document.getElementById("player").play(); }
+    function cerrarVideo() {
+        let v = document.getElementById("player");
+        v.pause(); v.currentTime = 0;
+        cerrarModal('video-modal');
+        document.getElementById("musica").play();
+    }
 </script>
-
 </body>
 </html>
