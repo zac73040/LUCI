@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para Linda Lu 💖</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7WS4LH8YCY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-7WS4LH8YCY');
+    </script>
+
     <style>
         :root {
             --rosa-brillante: #ff0054;
@@ -27,7 +37,6 @@
             overflow-x: hidden;
         }
 
-        /* --- Login --- */
         #login {
             background: rgba(255, 255, 255, 0.05);
             padding: 30px 50px;
@@ -44,7 +53,6 @@
 
         input { padding: 12px; border-radius: 8px; border: 1px solid var(--girasol-petalo); margin-bottom: 20px; width: 220px; text-align: center; background: rgba(0,0,0,0.6); color: white; }
 
-        /* --- Contenido Principal --- */
         #contenido { display: none; width: 100%; max-width: 600px; padding: 20px; animation: fadeIn 2s ease; }
         .rosa-frame { position: relative; width: 320px; height: 430px; margin: 0 auto 10px auto; }
         .rosa-svg { width: 100%; height: 100%; filter: drop-shadow(0 0 20px rgba(255, 0, 84, 0.5)); }
@@ -67,14 +75,11 @@
 
         #texto { font-size: 1.15rem; line-height: 1.6; color: #ffe5ec; margin-top: 10px; padding: 0 20px; white-space: pre-line; }
 
-        /* --- Botones --- */
         .btn-entrar { background: linear-gradient(45deg, #ff9500, #ffc300); color: #000; border: none; padding: 12px 35px; border-radius: 25px; cursor: pointer; font-weight: bold; }
         .btn-accion { background: var(--rosa-brillante); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; margin: 10px; transition: 0.3s; }
         
-        /* Botón de video resaltado */
         .btn-video { background: linear-gradient(45deg, #ff0054, #ff758f); box-shadow: 0 0 15px rgba(255, 0, 84, 0.5); }
 
-        /* --- Modales --- */
         .modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
             width: 85%; max-width: 400px; background: var(--color-carta); color: #3d2b1f; padding: 35px;
@@ -136,14 +141,12 @@
         </div>
         <p id="texto"></p>
         
-        <!-- Orden cambiado: Video primero -->
         <div id="botones-finales" style="display:none;">
             <button class="btn-accion btn-video" onclick="abrirVideo()">Ver video 🎬</button>
             <button class="btn-accion" onclick="abrirModal('carta')">Leer mi carta ✉️</button>
         </div>
     </div>
 
-    <!-- Carta (Pág 1 y Pág 2) -->
     <div id="carta" class="modal">
         <h3 style="text-align: center; color: #800e13; font-family: 'Georgia', serif;">Para: Linda Lu</h3>
         <div id="pag1" style="font-family: 'Georgia', serif; line-height: 1.6; text-align: justify;">
